@@ -1,4 +1,4 @@
-Install
+### Install
 
 ```
 https://github.com/HyogaFukuno/StateMachine.git?path=src
