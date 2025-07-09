@@ -105,7 +105,10 @@ namespace Rest.StateMachines
             {
                 var source = integerModifier;
                 var modifierKey = Unsafe.As<int, TModifierKey>(ref source);
-                var modifier = modifiers[modifierKey];
+                if (!modifiers.TryGetValue(modifierKey, out var modifier))
+                {
+                    continue;
+                }
 
                 if (modifier.IsCallUpdate)
                 {
