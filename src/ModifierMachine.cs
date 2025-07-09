@@ -78,7 +78,10 @@ namespace Rest.StateMachines
             integerCurrent |= integerAdd;
             
             currentModifier = Unsafe.As<int, TModifierKey>(ref integerCurrent);
-            modifiers[modifierKey].Enter();
+            if (modifiers.TryGetValue(modifierKey, out var modifier))
+            {
+                modifier.Enter();
+            }
         }
 
         public void RemoveModifier(TModifierKey modifierKey)
@@ -95,7 +98,10 @@ namespace Rest.StateMachines
             integerCurrent &= ~integerRemove;
             
             currentModifier = Unsafe.As<int, TModifierKey>(ref integerCurrent);
-            modifiers[modifierKey].Exit();
+            if (modifiers.TryGetValue(modifierKey, out var modifier))
+            {
+                modifier.Exit();
+            }
         }
 
         public void Update()
