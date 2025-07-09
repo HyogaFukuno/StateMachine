@@ -15,6 +15,7 @@ namespace Rest.StateMachines
             internal ModifierMachine<TContext, TModifierKey> modifierMachine = null!;
 
             protected internal bool IsCallUpdate { get; protected set; } = true;
+            protected internal virtual Predicate<TContext> CanAdd { get; protected set; } = _ => true;
             protected ModifierMachine<TContext, TModifierKey> ModifierMachine => modifierMachine;
             protected TContext Context => modifierMachine.Context;
 
@@ -75,13 +76,21 @@ namespace Rest.StateMachines
                 return;
             }
 
-            integerCurrent |= integerAdd;
-            
-            currentModifier = Unsafe.As<int, TModifierKey>(ref integerCurrent);
+            // Keyに対応するModifierがある場合はそのModifierのCanAddによって
+            // 状態を追加するかを判断する
+            // 対応するModifierがない場合は単なる状態としてCurrentModifierに追加する
             if (modifiers.TryGetValue(modifierKey, out var modifier))
             {
+                if (!modifier.CanAdd.Invoke(Context))
+                {
+                    return;
+                }
+                
                 modifier.Enter();
             }
+            
+            integerCurrent |= integerAdd;
+            currentModifier = Unsafe.As<int, TModifierKey>(ref integerCurrent);
         }
 
         public void RemoveModifier(TModifierKey modifierKey)
