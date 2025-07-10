@@ -6,7 +6,15 @@ using System.Linq;
 
 namespace Rest.StateMachines
 {
-    public class StateMachine<TContext, TEvent> : IDisposable where TEvent : notnull
+    public interface IReadOnlyStateMachine<out TContext, in TEvent> where TEvent : notnull
+    {
+        TContext Context { get; }
+
+        bool SendEvent(TEvent e);
+    }
+    
+    public class StateMachine<TContext, TEvent> : IReadOnlyStateMachine<TContext, TEvent>,
+                                                  IDisposable where TEvent : notnull
     {
         const int DefaultCapacity = 10;
 

@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace Rest.StateMachines
 {
-	public class ModifierMachine<TContext, TModifierKey> : IDisposable where TModifierKey : struct, Enum
+    public class ModifierMachine<TContext, TModifierKey> : IDisposable where TModifierKey : struct, Enum
 	{	
         const int DefaultCapacity = 10;
         
