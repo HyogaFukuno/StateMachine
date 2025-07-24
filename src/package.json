@@ -1,6 +1,6 @@
 {
   "name": "com.rest.state-machine",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "displayName": "State Machine",
   "description": "A State Machine for Unity's InGame Development.",
   "unity": "6000.0",
